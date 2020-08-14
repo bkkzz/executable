@@ -38,4 +38,4 @@ release-pom.xml
 pom.xml.releaseBackup
 
 ### install ###
-install/lib/
+lib/
