@@ -6,5 +6,5 @@ JCLI_HOME=$(dirname $(cd "$(dirname "$0")";pwd))
 JAR_FILE=$JCLI_HOME/lib/jdate-0.0.1-SNAPSHOT.jar
 
 
-. $JCLI_HOME/bin/run.sh $@
+. $JCLI_HOME/bin/run.sh "$@"
 

@@ -37,5 +37,9 @@ release.properties
 release-pom.xml
 pom.xml.releaseBackup
 
+### mac ###
+.DS_Store
+
 ### install ###
 lib/
+

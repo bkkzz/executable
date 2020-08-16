@@ -7,8 +7,10 @@ import com.wxl.cli.exception.CommandExecuteException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.DateTimeException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Create by wuxingle on 2020/08/07
@@ -36,10 +38,14 @@ public class FormatCommand extends AbstractCommand {
             String fmt = getOptionValue(context, 1, JDateConstant.DEFAULT_FORMAT);
 
             try {
-                String result = new SimpleDateFormat(fmt).format(new Date(timestamp));
+                Instant instant = Instant.ofEpochMilli(timestamp);
+                LocalDateTime dateTime = LocalDateTime.ofInstant(instant, JDateConstant.DEFAULT_ZONE);
+
+                String result = DateTimeFormatter.ofPattern(fmt).format(dateTime);
+
                 context.stdout().println(result);
-            } catch (Exception e) {
-                throw new CommandExecuteException("fmt格式非法:" + fmt);
+            } catch (IllegalArgumentException | DateTimeException e) {
+                throw new CommandExecuteException("fmt error by:" + fmt);
             }
         }
 

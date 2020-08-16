@@ -8,9 +8,9 @@ import com.wxl.cli.exception.OptionArgumentException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Create by wuxingle on 2020/08/07
@@ -26,12 +26,6 @@ public class ParseCommand extends AbstractCommand {
             .argName("time [fmt]")
             .build();
 
-    private static final String[] FORMATS = new String[]{
-            JDateConstant.DEFAULT_FORMAT,
-            "yyyy-MM-dd HH:mm:ss",
-            "yyyy-MM-dd"
-    };
-
     @Override
     public void execute(CommandContext context, CommandChain chain) throws CommandExecuteException {
         CommandLine commandLine = context.commandLine();
@@ -42,34 +36,25 @@ public class ParseCommand extends AbstractCommand {
             String time = getRequireOptionValue(context, 0);
             // 格式化参数
             String fmt = getOptionValue(context, 1);
-            Date date;
+            LocalDateTime dateTime;
             if (fmt != null) {
                 try {
-                    date = new SimpleDateFormat(fmt).parse(time);
+                    dateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern(fmt));
                 } catch (Exception e) {
-                    throw new OptionArgumentException("解析失败:" + time + ",fmt=" + fmt);
+                    throw new OptionArgumentException("parse error by:" + time + ", fmt=" + fmt);
                 }
             } else {
-                date = parse(time);
-                if (date == null) {
-                    throw new OptionArgumentException("解析失败:" + time);
+                dateTime = JDateUtils.parse(time);
+                if (dateTime == null) {
+                    throw new OptionArgumentException("parse error by:" + time);
                 }
             }
-            context.stdout().println(date.getTime());
+
+            Instant instant = dateTime.atZone(JDateConstant.DEFAULT_ZONE).toInstant();
+            context.stdout().println(instant.toEpochMilli());
         }
 
         chain.doNext(context);
-    }
-
-    private Date parse(String time) {
-        for (String format : FORMATS) {
-            try {
-                return new SimpleDateFormat(format).parse(time);
-            } catch (ParseException e) {
-                //ignore
-            }
-        }
-        return null;
     }
 
     @Override

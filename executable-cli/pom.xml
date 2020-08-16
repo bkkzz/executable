@@ -32,8 +32,8 @@
                                 <goal>copy-dependencies</goal>
                             </goals>
                             <configuration>
-                                <!-- 把system依赖打包进去 -->
-                                <!-- <includeScope>system</includeScope> -->
+                                <excludeArtifactIds>lombok</excludeArtifactIds>
+                                <includeScope>compile</includeScope>
                                 <outputDirectory>${project.parent.basedir}/install/lib/ext</outputDirectory>
                             </configuration>
                         </execution>

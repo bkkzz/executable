@@ -21,10 +21,11 @@ public class JDate {
         CommandExecutor executor = new CommandExecutorBuilder()
                 .setName("jdate")
                 .addCommand(
-                        new NowCommand(),
                         new FormatCommand(),
                         new ParseCommand(),
-                        helpCommand
+                        new CalendarCommand(),
+                        helpCommand,
+                        new NowCommand()
                 )
                 .build();
 

@@ -50,6 +50,16 @@ public abstract class AbstractCommand implements Command {
         return val == null ? defaultVal : val;
     }
 
+    public Integer getOptionInteger(CommandContext context, int index) {
+        Long val = getOptionLong(context, index, false);
+        return val == null ? null : val.intValue();
+    }
+
+    public Integer getOptionInteger(CommandContext context, int index, Integer defaultVal) {
+        Long val = getOptionLong(context, index, false);
+        return val == null ? defaultVal : val.intValue();
+    }
+
     /**
      * 获取必选选项值
      *
@@ -61,6 +71,10 @@ public abstract class AbstractCommand implements Command {
 
     public Long getRequireOptionLong(CommandContext context, int index) {
         return getOptionLong(context, index, true);
+    }
+
+    public Integer getRequireOptionInteger(CommandContext context, int index) {
+        return getOptionLong(context, index, true).intValue();
     }
 
     /**
