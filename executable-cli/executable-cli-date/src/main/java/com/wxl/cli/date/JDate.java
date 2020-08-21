@@ -23,6 +23,8 @@ public class JDate {
                 .addCommand(
                         new FormatCommand(),
                         new ParseCommand(),
+                        new AddCommand(),
+                        new MinusCommand(),
                         new CalendarCommand(),
                         helpCommand,
                         new NowCommand()

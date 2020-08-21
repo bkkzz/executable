@@ -10,7 +10,6 @@ import org.apache.commons.cli.Option;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * Create by wuxingle on 2020/08/07
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class ParseCommand extends AbstractCommand {
 
-    private static final Option FORMAT_OPT = Option.builder("p")
+    private static final Option PARSE_OPT = Option.builder("p")
             .longOpt("parse")
             .desc("时间字符串解析为时间戳")
             .optionalArg(true)
@@ -38,13 +37,12 @@ public class ParseCommand extends AbstractCommand {
             String fmt = getOptionValue(context, 1);
             LocalDateTime dateTime;
             if (fmt != null) {
-                try {
-                    dateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern(fmt));
-                } catch (Exception e) {
+                dateTime = JDateUtils.parseDateTime(fmt, time);
+                if (dateTime == null) {
                     throw new OptionArgumentException("parse error by:" + time + ", fmt=" + fmt);
                 }
             } else {
-                dateTime = JDateUtils.parse(time);
+                dateTime = JDateUtils.parseDateTime(time);
                 if (dateTime == null) {
                     throw new OptionArgumentException("parse error by:" + time);
                 }
@@ -59,6 +57,6 @@ public class ParseCommand extends AbstractCommand {
 
     @Override
     public Option option() {
-        return FORMAT_OPT;
+        return PARSE_OPT;
     }
 }
