@@ -15,7 +15,7 @@ public class JDate {
 
     public static void main(String[] args) {
         HelpCommand helpCommand = new HelpCommand(new HelpFormatter(),
-                "默认格式化样式为:fmt=" + JDateConstant.DEFAULT_FORMAT,
+                "默认格式化样式为: yyyy-MM-dd HH:mm:ss.SSS",
                 null,
                 false);
 
