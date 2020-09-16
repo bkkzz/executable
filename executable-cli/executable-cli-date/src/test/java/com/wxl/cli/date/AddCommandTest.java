@@ -2,6 +2,7 @@ package com.wxl.cli.date;
 
 import com.wxl.cli.CommandExecutor;
 import com.wxl.cli.CommandExecutorBuilder;
+import com.wxl.cli.date.addition.PatternCommand;
 import org.junit.Test;
 
 import java.util.regex.Matcher;
@@ -15,16 +16,16 @@ public class AddCommandTest {
     public void test() {
         CommandExecutor executor = new CommandExecutorBuilder()
                 .setName("jdate")
-                .addCommand(new AddCommand())
+                .addCommand(new PatternCommand(), new AddCommand())
                 .build();
 
-        executor.execute(new String[]{"-a", "1d1w1M1y"});
+//        executor.execute(new String[]{"-a", "1d1w1M1y"});
 
-        executor.execute(new String[]{"-a", "2020-08-10", "1d1w1M1y"});
-        executor.execute(new String[]{"-a", "10:10:10", "1s1m1h"});
-        executor.execute(new String[]{"-a", "2020-08-10 10:10:10", "1d1w1M1y1s1m1h"});
-        executor.execute(new String[]{"-a", "1597894459742", "1d1w1M1y1s1m1h"});
-        executor.execute(new String[]{"-a", "2020-08-10", "1h"});
+        executor.execute(new String[]{"-a", "2020-08-10", "1d1w1M1y", "--pattern","HH:mm:ss"});
+//        executor.execute(new String[]{"-a", "10:10:10", "1s1m1h"});
+//        executor.execute(new String[]{"-a", "2020-08-10 10:10:10", "1d1w1M1y1s1m1h"});
+//        executor.execute(new String[]{"-a", "1597894459742", "1d1w1M1y1s1m1h"});
+//        executor.execute(new String[]{"-a", "2020-08-10", "1h"});
     }
 
     @Test

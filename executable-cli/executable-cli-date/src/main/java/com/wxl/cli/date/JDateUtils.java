@@ -74,6 +74,28 @@ public class JDateUtils {
     }
 
     /**
+     * timestamp转localDateTime
+     *
+     * @param timestamp
+     * @return
+     */
+    public static LocalDateTime toLocalDateTime(long timestamp) {
+        Instant instant = Instant.ofEpochMilli(timestamp);
+        return LocalDateTime.ofInstant(instant, JDateConstant.DEFAULT_ZONE);
+    }
+
+    /**
+     * localDateTime转timestamp
+     *
+     * @param dateTime
+     * @return
+     */
+    public static long toTimestamp(LocalDateTime dateTime) {
+        Instant instant = dateTime.atZone(JDateConstant.DEFAULT_ZONE).toInstant();
+        return instant.toEpochMilli();
+    }
+
+    /**
      * 检测输入的格式
      *
      * @param date

@@ -5,7 +5,9 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create by wuxingle on 2020/08/07
@@ -13,19 +15,19 @@ import java.util.List;
  */
 public class CommandExecutor {
 
-    private String name;
+    private final String name;
 
-    private List<Command> commands;
+    private final List<Command> commands;
 
-    private CommandLineParser parser;
+    private final CommandLineParser parser;
 
-    private Options options;
+    private final Options options;
 
-    private CommandErrorHandler errorHandler;
+    private final CommandErrorHandler errorHandler;
 
-    private PrintStream stdout;
+    private final PrintStream stdout;
 
-    private PrintStream stderr;
+    private final PrintStream stderr;
 
     CommandExecutor(String name,
                     CommandLineParser parser,
@@ -58,25 +60,65 @@ public class CommandExecutor {
 
             new DefaultCommandChain().doNext(context);
         } catch (Throwable e) {
-            errorHandler.handleError(context, e);
+            Command cmd = null;
+            if (e instanceof ExecuteException) {
+                cmd = ((ExecuteException) e).getCommand();
+                e = e.getCause();
+            }
+            errorHandler.handleError(context, cmd, e);
         }
     }
 
-
+    /**
+     * command chain impl
+     */
     private class DefaultCommandChain implements CommandChain {
 
         private int index = 0;
 
         @Override
         public void doNext(CommandContext context) {
-            if (index < commands.size()) {
-                commands.get(index++).execute(context, this);
+            Command cmd = null;
+            try {
+                if (index < commands.size()) {
+                    cmd = commands.get(index++);
+                    cmd.execute(context, this);
+                }
+                index = 0;
+            } catch (Throwable e) {
+                if (e instanceof ExecuteException) {
+                    throw e;
+                }
+                throw new ExecuteException(cmd, e);
             }
-            index = 0;
         }
     }
 
+    /**
+     * 执行异常
+     */
+    private static class ExecuteException extends RuntimeException {
+
+        private static final long serialVersionUID = 2550224515375239796L;
+
+        private Command command;
+
+        public ExecuteException(Command command, Throwable cause) {
+            super(cause);
+            this.command = command;
+        }
+
+        public Command getCommand() {
+            return command;
+        }
+    }
+
+    /**
+     * context impl
+     */
     private class DefaultCommandContext implements CommandContext {
+
+        private Map<String, Object> attrMap = new HashMap<>();
 
         private CommandLine commandLine;
 
@@ -106,6 +148,23 @@ public class CommandExecutor {
         @Override
         public PrintStream stderr() {
             return stderr;
+        }
+
+        @Override
+        public void setAttr(String key, Object value) {
+            attrMap.put(key, value);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getAttr(String key) {
+            return (T) attrMap.get(key);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <T> T getAttr(String key, T defaultVal) {
+            return (T) attrMap.getOrDefault(key, defaultVal);
         }
     }
 

@@ -3,6 +3,7 @@ package com.wxl.cli.date;
 import lombok.Getter;
 
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.regex.Pattern;
 
@@ -13,9 +14,15 @@ import java.util.regex.Pattern;
 public interface JDateConstant {
 
     /**
-     * 默认格式
+     * 指定日期格式
      */
-    String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
+    String ATTR_FORMAT = "format";
+
+
+    /**
+     * 默认格式化
+     */
+    DateTimeFormatter DEFAULT_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     /**
      * 时区

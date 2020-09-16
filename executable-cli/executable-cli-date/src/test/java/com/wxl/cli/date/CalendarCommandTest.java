@@ -16,6 +16,6 @@ public class CalendarCommandTest {
                 .addCommand(new CalendarCommand())
                 .build();
 
-        executor.execute(new String[]{"-c", "2020", "9"});
+        executor.execute(new String[]{"-c", "2020"});
     }
 }

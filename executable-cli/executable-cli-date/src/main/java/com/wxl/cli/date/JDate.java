@@ -3,6 +3,7 @@ package com.wxl.cli.date;
 import com.wxl.cli.CommandExecutor;
 import com.wxl.cli.CommandExecutorBuilder;
 import com.wxl.cli.HelpCommand;
+import com.wxl.cli.date.addition.PatternCommand;
 import org.apache.commons.cli.HelpFormatter;
 
 /**
@@ -21,11 +22,13 @@ public class JDate {
         CommandExecutor executor = new CommandExecutorBuilder()
                 .setName("jdate")
                 .addCommand(
+                        new CalendarCommand(),
+                        new PatternCommand(),
+
                         new FormatCommand(),
                         new ParseCommand(),
                         new AddCommand(),
                         new MinusCommand(),
-                        new CalendarCommand(),
                         helpCommand,
                         new NowCommand()
                 )

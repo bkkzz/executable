@@ -1,7 +1,5 @@
 package com.wxl.cli;
 
-import com.wxl.cli.exception.CommandExecuteException;
-import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 
@@ -11,7 +9,7 @@ import java.io.PrintWriter;
  * Create by wuxingle on 2020/08/07
  * 帮助命令
  */
-public class HelpCommand implements Command {
+public class HelpCommand extends AbstractCommand {
 
     private static final Option HELP = Option.builder("h")
             .longOpt("help")
@@ -42,9 +40,8 @@ public class HelpCommand implements Command {
     }
 
     @Override
-    public void execute(CommandContext context, CommandChain chain) throws CommandExecuteException {
-        CommandLine commandLine = context.commandLine();
-        if (commandLine.hasOption("h")) {
+    public void execute(CommandContext context, CommandChain chain) {
+        if (isCurrentCommand(context)) {
             PrintWriter pw = new PrintWriter(context.stdout());
             formatter.printHelp(pw, formatter.getWidth(), context.name(),
                     head,

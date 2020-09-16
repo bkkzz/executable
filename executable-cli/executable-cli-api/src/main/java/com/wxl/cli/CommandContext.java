@@ -35,4 +35,19 @@ public interface CommandContext {
      * 错误输出
      */
     PrintStream stderr();
+
+    /**
+     * 设置自定义属性
+     */
+    void setAttr(String key, Object value);
+
+    /**
+     * 获取自定义属性
+     */
+    <T> T getAttr(String key);
+
+    /**
+     * 获取自定义属性
+     */
+    <T> T getAttr(String key, T defaultVal);
 }

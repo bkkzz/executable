@@ -7,5 +7,5 @@ package com.wxl.cli;
 public interface CommandErrorHandler {
 
 
-    void handleError(CommandContext context, Throwable error);
+    void handleError(CommandContext context, Command cmd, Throwable error);
 }

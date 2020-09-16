@@ -3,8 +3,6 @@ package com.wxl.cli.date;
 import com.wxl.cli.AbstractCommand;
 import com.wxl.cli.CommandChain;
 import com.wxl.cli.CommandContext;
-import com.wxl.cli.exception.CommandExecuteException;
-import com.wxl.cli.exception.OptionArgumentException;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.ArrayUtils;
@@ -23,29 +21,33 @@ public class CalendarCommand extends AbstractCommand {
             .desc("输出日历")
             .optionalArg(true)
             .numberOfArgs(2)
-            .argName("[year month]")
+            .argName("[year] [month]")
             .build();
 
 
     @Override
-    public void execute(CommandContext context, CommandChain chain) throws CommandExecuteException {
+    public void execute(CommandContext context, CommandChain chain) {
         CommandLine commandLine = context.commandLine();
-        if (commandLine.hasOption("c")) {
+        if (isCurrentCommand(context)) {
             checkOptionValueLen(context, 0, 2);
 
             int year;
             int month;
             LocalDate now = LocalDate.now();
             if (!ArrayUtils.isEmpty(commandLine.getOptionValues("c"))) {
-                year = getOptionInteger(context, 0);
-                month = getOptionInteger(context, 1);
+                year = getRequireOptionInteger(context, 0);
+                month = getRequireOptionInteger(context, 1);
             } else {
                 year = now.getYear();
                 month = now.getMonthValue();
             }
-            if (year < 1900 || year > 9999 || month < 1 || month > 12) {
-                throw new OptionArgumentException("year range:[1900,9999],month range:[1,12]! " +
-                        "but:" + year + ',' + month);
+            if (year < 1900 || year > 9999) {
+                throw new IllegalArgumentException("year must in [1900,9999], " +
+                        "but is: " + year);
+            }
+            if (month < 1 || month > 12) {
+                throw new IllegalArgumentException("month must in [1,12], " +
+                        "but is: " + month);
             }
 
             // 当月第一天是周几

@@ -16,6 +16,7 @@
     <modules>
         <module>executable-cli-api</module>
         <module>executable-cli-date</module>
+        <module>executable-cli-random</module>
     </modules>
 
     <build>
