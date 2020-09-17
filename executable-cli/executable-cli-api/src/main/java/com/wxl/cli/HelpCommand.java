@@ -1,5 +1,6 @@
 package com.wxl.cli;
 
+import lombok.Setter;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 
@@ -9,6 +10,7 @@ import java.io.PrintWriter;
  * Create by wuxingle on 2020/08/07
  * 帮助命令
  */
+@Setter
 public class HelpCommand extends AbstractCommand {
 
     private static final Option HELP = Option.builder("h")
@@ -23,6 +25,8 @@ public class HelpCommand extends AbstractCommand {
     private String foot;
 
     private boolean autoUsage;
+
+    private boolean isEnd;
 
     public HelpCommand() {
         this(new HelpFormatter());
@@ -41,7 +45,7 @@ public class HelpCommand extends AbstractCommand {
 
     @Override
     public void execute(CommandContext context, CommandChain chain) {
-        if (isCurrentCommand(context)) {
+        if (isCurrentCommand(context) || isEnd) {
             PrintWriter pw = new PrintWriter(context.stdout());
             formatter.printHelp(pw, formatter.getWidth(), context.name(),
                     head,

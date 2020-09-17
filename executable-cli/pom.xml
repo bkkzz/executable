@@ -18,6 +18,7 @@
         <module>executable-cli-date</module>
         <module>executable-cli-random</module>
         <module>executable-cli-json</module>
+        <module>executable-cli-encode</module>
     </modules>
 
     <build>

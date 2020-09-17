@@ -16,6 +16,7 @@
         <cli.version>1.4</cli.version>
         <commons.lang3.version>3.10</commons.lang3.version>
         <commons.collection.version>4.4</commons.collection.version>
+        <commons.io.version>2.8.0</commons.io.version>
     </properties>
 
     <dependencyManagement>
@@ -49,6 +50,12 @@
                 <version>${commons.collection.version}</version>
             </dependency>
 
+            <!-- commons-io -->
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>
