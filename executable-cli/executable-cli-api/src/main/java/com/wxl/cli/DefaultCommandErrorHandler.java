@@ -13,9 +13,9 @@ public class DefaultCommandErrorHandler implements CommandErrorHandler {
     public void handleError(CommandContext context, Command cmd, Throwable error) {
         if (cmd != null) {
             String tipOpt = getTipOpt(cmd.option());
-            context.stderr().println("Error option: " + tipOpt + ", " + error.getMessage());
+            context.stderr().println("Error option: " + tipOpt + ", " + getCause(error).getMessage());
         } else {
-            context.stderr().println(error.getMessage());
+            context.stderr().println(getCause(error).getMessage());
         }
     }
 
@@ -26,5 +26,15 @@ public class DefaultCommandErrorHandler implements CommandErrorHandler {
             return "-" + opt;
         }
         return "--" + option.getLongOpt();
+    }
+
+
+    private Throwable getCause(Throwable error) {
+        Throwable cause = error.getCause();
+        while (cause != null) {
+            error = cause;
+            cause = error.getCause();
+        }
+        return error;
     }
 }

@@ -1,0 +1,9 @@
+#!/bin/bash
+# json命令
+
+# 根据脚本位置获取命令安装位置
+JCLI_HOME=$(dirname $(cd "$(dirname "$0")";pwd))
+JAR_FILE=$JCLI_HOME/lib/json-0.0.1-SNAPSHOT.jar
+
+
+. $JCLI_HOME/bin/run.sh "$@"

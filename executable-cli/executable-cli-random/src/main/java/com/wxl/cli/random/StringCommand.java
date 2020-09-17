@@ -3,7 +3,6 @@ package com.wxl.cli.random;
 import com.wxl.cli.AbstractCommand;
 import com.wxl.cli.CommandChain;
 import com.wxl.cli.CommandContext;
-import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -30,11 +29,10 @@ public class StringCommand extends AbstractCommand {
 
     @Override
     public void execute(CommandContext context, CommandChain chain) {
-        CommandLine commandLine = context.commandLine();
 
         Integer min;
         Integer max;
-        if (commandLine.hasOption("s")) {
+        if (isCurrentCommand(context)) {
             checkOptionValueLen(context, 0, 2);
             min = getOptionInteger(context, 0);
             max = getOptionInteger(context, 1);

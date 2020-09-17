@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Create by wuxingle on 2020/08/07
@@ -54,8 +55,22 @@ public class CommandExecutor {
      * @param args
      */
     public void execute(String[] args) {
+        execute(args, null);
+    }
+
+    /**
+     * 执行
+     *
+     * @param args           参数
+     * @param ctxInitializer context初始化
+     */
+    public void execute(String[] args, Consumer<CommandContext> ctxInitializer) {
         DefaultCommandContext context = new DefaultCommandContext();
         try {
+            if (ctxInitializer != null) {
+                ctxInitializer.accept(context);
+            }
+
             context.commandLine = parser.parse(options, args);
 
             new DefaultCommandChain().doNext(context);
