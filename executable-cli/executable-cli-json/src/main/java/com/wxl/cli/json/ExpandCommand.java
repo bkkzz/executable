@@ -18,27 +18,22 @@ public class ExpandCommand extends JsonCommand {
             .longOpt("expand")
             .desc("json展开，默认")
             .optionalArg(true)
-            .numberOfArgs(1)
-            .argName("[json]")
+            .hasArg(false)
             .build();
 
     @Override
     public void execute(CommandContext context, CommandChain chain) {
-        String jsonStr;
         if (isCurrentCommand(context)) {
-            jsonStr = getRequireOptionValue(context, 0);
-        } else {
-            jsonStr = getRequireArgValue(context, 0);
+            JsonElement element = parseJson(context);
+
+            GsonBuilder gsonBuilder = getGsonBuilder(context);
+            Gson gson = gsonBuilder.setPrettyPrinting().create();
+            String expandJson = gson.toJson(element);
+
+            context.stdout().println(expandJson);
+            return;
         }
-
-        GsonBuilder gsonBuilder = getGsonBuilder(context);
-        Gson gson = gsonBuilder.setPrettyPrinting().create();
-
-        JsonElement element = parseJson(jsonStr, context);
-
-        String expandJson = gson.toJson(element);
-
-        context.stdout().println(expandJson);
+        chain.doNext(context);
     }
 
     @Override

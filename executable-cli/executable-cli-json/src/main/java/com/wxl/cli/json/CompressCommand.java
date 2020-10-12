@@ -17,20 +17,16 @@ public class CompressCommand extends JsonCommand {
             .longOpt("compress")
             .desc("json压缩")
             .optionalArg(true)
-            .numberOfArgs(1)
-            .argName("[json]")
+            .hasArg(false)
             .build();
 
     @Override
     public void execute(CommandContext context, CommandChain chain) {
         if (isCurrentCommand(context)) {
-            String jsonStr = getRequireOptionValue(context, 0);
+            JsonElement element = parseJson(context);
 
             GsonBuilder gsonBuilder = getGsonBuilder(context);
             Gson gson = gsonBuilder.create();
-
-            JsonElement element = parseJson(jsonStr, context);
-
             String compressJson = gson.toJson(element);
 
             context.stdout().println(compressJson);

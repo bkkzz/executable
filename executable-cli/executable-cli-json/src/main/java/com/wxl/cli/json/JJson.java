@@ -15,16 +15,18 @@ public class JJson {
 
     public static void main(String[] args) {
         HelpCommand helpCommand = new HelpCommand();
+        helpCommand.setEnd(true);
 
         CommandExecutor executor = new CommandExecutorBuilder()
                 .setName("json")
                 .addCommand(
-                        helpCommand,
                         new NullableCommand(),
                         new LenientCommand(),
 
                         new CompressCommand(),
-                        new ExpandCommand()
+                        new ExpandCommand(),
+                        new PathFilterCommand(),
+                        helpCommand
                 )
                 .build();
 

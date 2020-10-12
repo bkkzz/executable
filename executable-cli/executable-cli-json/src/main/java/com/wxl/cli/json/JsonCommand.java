@@ -15,10 +15,12 @@ import java.io.StringReader;
  */
 public abstract class JsonCommand extends AbstractCommand {
 
+
     /**
      * json解析
      */
-    protected JsonElement parseJson(String jsonStr, CommandContext context) {
+    protected JsonElement parseJson(CommandContext context) {
+        String jsonStr = getRequireArgValue(context, 0);
         if (context.getAttr(JsonConstant.ATTR_LENIENT, false)) {
             JsonReader reader = new JsonReader(new StringReader(jsonStr));
             return JsonParser.parseReader(reader);

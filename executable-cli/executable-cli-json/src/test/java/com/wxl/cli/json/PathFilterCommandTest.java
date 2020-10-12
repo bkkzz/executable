@@ -7,9 +7,9 @@ import com.wxl.cli.json.addition.NullableCommand;
 import org.junit.Test;
 
 /**
- * Create by wuxingle on 2020/09/16
+ * Create by wuxingle on 2020/09/28
  */
-public class ExpandCommandTest {
+public class PathFilterCommandTest {
 
     @Test
     public void test1() {
@@ -18,11 +18,12 @@ public class ExpandCommandTest {
                 .addCommand(
                         new LenientCommand(),
                         new NullableCommand(),
-                        new ExpandCommand()
+                        new PathFilterCommand()
                 )
                 .build();
 
-        executor.execute(new String[]{"-e", "[12,{\"name\":\"age\",\"a\":{\"b\":\"c\",\"d\":null}}]1",
-                "--lenient", "--nullable"});
+        executor.execute(new String[]{"-f", "$[0]", "[12,{\"name\":\"age\",\"a\":{\"b\":\"c\",\"d\":null}}]",
+                "--nullable"});
     }
 }
+
